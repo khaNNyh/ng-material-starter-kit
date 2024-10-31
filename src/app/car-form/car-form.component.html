@@ -1,0 +1,65 @@
+<div class="form-container" [formGroup]="carForm">
+  <h1>Car Form</h1>
+  <form class="form" [formGroup]="carForm">
+    <mat-form-field class="full-width">
+      <mat-label>Model</mat-label>
+      <input matInput formControlName="model" placeholder="Model S" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Brand Id</mat-label>
+      <mat-select formControlName="brandId">
+        <mat-option *ngFor="let brand of carBrands" [value]="brand.id">
+          {{ brand.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h3>Security Features</h3>
+    <div formArrayName="securityGroups">
+      <div *ngFor="let group of securityGroups.controls; let i = index">
+        <mat-radio-group [formControlName]="i" aria-label="Select an option">
+          <mat-radio-button
+            class="button"
+            *ngFor="let security of carSecurity"
+            [value]="security.id"
+          >
+            {{ security.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <button
+      style="margin-top: 0"
+      class="button"
+      mat-fab
+      color="primary"
+      type="button"
+      (click)="addSecurityRow()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <section class="checkbox-container" formArrayName="comfortOptions">
+      <mat-checkbox
+        class="checkbox"
+        *ngFor="let option of carComfort"
+        [value]="option.id"
+        (change)="onCheckboxChange(option.id, $event)"
+        class="example-margin"
+      >
+        {{ option.name }}
+      </mat-checkbox>
+    </section>
+
+    <button class="button" mat-button color="primary" (click)="submitCarForm()">
+      Submit
+    </button>
+  </form>
+</div>
